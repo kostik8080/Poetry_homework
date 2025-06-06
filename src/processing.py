@@ -21,5 +21,3 @@ def sort_by_date(transactions: list[dict], reverse: bool = True) -> list[dict]:
         key=lambda x: x['date'],
         reverse=reverse
     )
-
-
