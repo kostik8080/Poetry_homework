@@ -32,3 +32,13 @@ def sample_transactions():
             "to": "Счет 55556666777788889999"
         }
     ]
+
+
+@pytest.fixture
+def invalid_transactions():
+    return [
+        {"state": "EXECUTED", "date": "invalid-date"},
+        {"state": "PENDING", "description": "No date"},
+        {"date": "2023-01-01T00:00:00.000000"},
+        {}
+    ]
