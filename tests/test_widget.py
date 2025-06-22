@@ -31,11 +31,14 @@ def test_mask_account_card_invalid(invalid_input, expected):
 def test_get_date_valid(date_str, expected):
     assert get_date(date_str) == expected
 
-@pytest.mark.parametrize("invalid_date", [
-    "2023-05-15",            # неполный формат
-    "invalid-date",          # некорректная дата
-    "",                      # пустая строка
-    None,                    # None
+@pytest.mark.parametrize("invalid_date, expected", [
+    ("2023-05-15", "Некорректный формат даты"),            # неполный формат
+    ("invalid-date", "Некорректный формат даты"),          # некорректная дата
+    ("", "Некорректный формат даты"),                      # пустая строка
+    (None, "Некорректный формат даты"),                    # None
+    ("2023/05/15", "Некорректный формат даты"),            # неправильный разделитель
+    (123456789, "Некорректный формат даты"),               # число вместо строки
+    ({"date": "2023-05-15T14:30:00.000000"}, "Некорректный формат даты"),  # словарь
 ])
-def test_get_date_invalid(invalid_date):
-    assert get_date(invalid_date) == "Некорректный формат даты"
+def test_get_date_invalid(invalid_date, expected):
+    assert get_date(invalid_date) == expected
