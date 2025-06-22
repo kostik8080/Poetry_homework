@@ -19,6 +19,12 @@ def get_mask_card_number(card_number: str) -> str:
 
 def get_mask_account(account_number: str) -> str:
     """Функция принимает строку из цифр и возвращает последние 4 цифры"""
+    if account_number is None:
+        return "Номер счета должен содержать только цифры и содержать 20 символов"
+
+    if not isinstance(account_number, str):
+        return "Номер счета должен быть строкой"
+
     if account_number.isdigit() and len(account_number) == 20:
         return f"**{account_number[-4:]}"
     return "Номер счета должен содержать только цифры и содержать 20 символов"
