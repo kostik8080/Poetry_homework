@@ -10,15 +10,18 @@ from src.widget import mask_account_card, get_date
 def test_mask_account_card_valid(input_str, expected):
     assert mask_account_card(input_str) == expected
 
-@pytest.mark.parametrize("invalid_input", [
-    "Invalid 123",           # неверная длина
-    "Card abcdefghijklmnop", # не цифры
-    "",                      # пустая строка
-    "Just text",             # нет номера
-    None,                    # None
+@pytest.mark.parametrize("invalid_input, expected", [
+    ("Invalid 123", "Номер карты или номер счета должен содержать целые числа"),           # неверная длина
+    ("Card abcdefghijklmnop", "Номер карты или номер счета должен содержать целые числа"), # не цифры
+    ("", "Номер карты или номер счета должен содержать целые числа"),                      # пустая строка
+    ("   ", "Номер карты или номер счета должен содержать целые числа"),                   # только пробелы
+    ("Just text", "Номер карты или номер счета должен содержать целые числа"),             # нет номера
+    (None, "Номер карты или номер счета должен содержать целые числа"),                    # None
+    ("Visa", "Номер карты или номер счета должен содержать целые числа"),                  # только название карты
+    ("Счет", "Номер карты или номер счета должен содержать целые числа"),                 # только название счета
 ])
-def test_mask_account_card_invalid(invalid_input):
-    assert mask_account_card(invalid_input) == "Номер карты или номер счета должен содержать целые числа"
+def test_mask_account_card_invalid(invalid_input, expected):
+    assert mask_account_card(invalid_input) == expected
 
 @pytest.mark.parametrize("date_str, expected", [
     ("2023-05-15T14:30:00.000000", "15.05.2023"),
