@@ -27,9 +27,12 @@ def mask_account_card(world: str) -> str:
 
 
 def get_date(date_str: str) -> str:
-    """Функция принимает ввиде строки дату и время и выводи в виде читаемого формата"""
+    """Функция принимает строку с датой и временем и возвращает в читаемом формате"""
+    if not date_str:  # Обрабатываем None, пустую строку и другие "ложные" значения
+        return "Некорректный формат даты"
+
     try:
         date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%f")
         return date_obj.strftime("%d.%m.%Y")
-    except ValueError:
+    except (ValueError, TypeError):
         return "Некорректный формат даты"
