@@ -22,13 +22,18 @@ def test_get_mask_card_number_invalid(invalid_card):
     with pytest.raises(ValueError):
         get_mask_card_number(invalid_card)
 
-@pytest.mark.parametrize("account_number, expected", [
-    ("12345678901234567890", "**7890"),
-    ("98765432109876543210", "**3210"),
-    ("00001111222233334444", "**4444"),
+@pytest.mark.parametrize("invalid_account, expected_message", [
+    ("12345678", "Номер счета должен содержать только цифры и содержать 20 символов"),              # слишком короткий
+    ("123456789012345678901234567890", "Номер счета должен содержать только цифры и содержать 20 символов"),  # слишком длинный
+    ("abcdefghijklmnopqrst", "Номер счета должен содержать только цифры и содержать 20 символов"),  # не цифры
+    ("", "Номер счета должен содержать только цифры и содержать 20 символов"),                      # пустая строка
+    (None, "Номер счета должен содержать только цифры и содержать 20 символов"),                    # None
+    (12345678901234567890, "Номер счета должен быть строкой"),                                      # число вместо строки
+    ({"account": "12345678901234567890"}, "Номер счета должен быть строкой"),                       # словарь
 ])
-def test_get_mask_account_valid(account_number, expected):
-    assert get_mask_account(account_number) == expected
+def test_get_mask_account_invalid(invalid_account, expected_message):
+    result = get_mask_account(invalid_account)
+    assert result == expected_message
 
 @pytest.mark.parametrize("invalid_account", [
     "12345678",              # слишком короткий
